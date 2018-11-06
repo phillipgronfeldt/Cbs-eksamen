@@ -13,7 +13,7 @@ public final class Hashing {
 
       // We load the hashing algoritm we wish to use.
       MessageDigest md = MessageDigest.getInstance("MD5");
-      rawString = rawString + "dsdksdj";
+        rawString = rawString + "dsdksdj";
 
       // We convert to byte array
       byte[] byteArray = md.digest(rawString.getBytes());
