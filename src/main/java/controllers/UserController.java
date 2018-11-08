@@ -96,6 +96,9 @@ public class UserController {
 
   public static User createUser(User user) {
 
+    //initialiserer hash
+    Hashing hashname = new Hashing();
+
     // Write in log that we've reach this step
     Log.writeLog(UserController.class.getName(), user, "Actually creating a user in DB", 0);
 
@@ -108,14 +111,15 @@ public class UserController {
     }
 
     // Insert the user in the DB
-    // TODO: Hash the user password before saving it.
+    // TODO: Hash the user password before saving it. FIXED
     int userID = dbCon.insert(
         "INSERT INTO user(first_name, last_name, password, email, created_at) VALUES('"
             + user.getFirstname()
             + "', '"
             + user.getLastname()
             + "', '"
-            + Hashing.md5(user.getPassword())
+                //Tilføjer hash til passwordet
+            + hashname.HashWithSalt(user.getPassword())
             + "', '"
             + user.getEmail()
             + "', "

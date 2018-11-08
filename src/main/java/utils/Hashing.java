@@ -65,9 +65,12 @@ public final class Hashing {
 
 
   }
-  public String HashWithSalt (String tgh){
-    String salt = tgh+this.salt;
+
+  //ligger salt i slutningen af hash
+  public String HashWithSalt(String tgh) {
+    String salt = tgh + this.salt;
     return md5(salt);
 
 
+  }
 }
