@@ -25,12 +25,14 @@ public final class Config {
   private static long PRODUCT_TTL;
   private static long ORDER_TTL;
   private static long USER_TTL;
+  private static String SALT;
 
   public static long getProductTtl() {
     return PRODUCT_TTL;
   }
   public static long getOrderTtl() { return ORDER_TTL;  }
   public static long getUserTtl() { return USER_TTL;  }
+  public static String getSALT() { return SALT;  }
 
 
   public static String getDatabaseHost() {
@@ -107,9 +109,12 @@ public final class Config {
     SOLR_PATH = json.get("SOLR_PATH").toString().replace("\"", "");
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     PRODUCT_TTL = json.get("PRODUCT_TTL").getAsLong();
+    SALT = json.get("SALT").getAsString();
 
     //
     ORDER_TTL = json.get("ORDER_TTL").getAsLong();
     USER_TTL = json.get("ORDER_TTL").getAsLong();
+
+
   }
 }

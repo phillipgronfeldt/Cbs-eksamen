@@ -7,13 +7,17 @@ import org.bouncycastle.util.encoders.Hex;
 
 public final class Hashing {
 
+  private String salt = Config.getSALT();
+
+  // her oprettes salt og giver den værdi der ligger i resoruces
   // TODO: You should add a salt and make this secure - FIXED
+  // For at gøre den mere secure, kan man oprette en salt med hver brugeres specifikke Createdtime, så deres salt er deres createdtime. På denne måde får hver bruger en unik salt.
   public static String md5(String rawString) {
     try {
 
       // We load the hashing algoritm we wish to use.
       MessageDigest md = MessageDigest.getInstance("MD5");
-        rawString = rawString + "dsdksdj";
+
 
       // We convert to byte array
       byte[] byteArray = md.digest(rawString.getBytes());
@@ -43,7 +47,6 @@ public final class Hashing {
     try {
       // We load the hashing algoritm we wish to use.
       MessageDigest digest = MessageDigest.getInstance("SHA-256");
-      rawString = rawString + "sdsajd";
 
       // We convert to byte array
       byte[] hash = digest.digest(rawString.getBytes(StandardCharsets.UTF_8));
@@ -59,5 +62,12 @@ public final class Hashing {
     }
 
     return rawString;
+
+
   }
+  public String HashWithSalt (String tgh){
+    String salt = tgh+this.salt;
+    return md5(salt);
+
+
 }
