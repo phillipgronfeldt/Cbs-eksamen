@@ -2,8 +2,6 @@ package utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
-import org.apache.solr.client.solrj.SolrQuery;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +24,7 @@ public final class Config {
   private static long ORDER_TTL;
   private static long USER_TTL;
   private static String SALT;
+  private static String ENCRYPTION_KEY;
 
   public static long getProductTtl() {
     return PRODUCT_TTL;
@@ -33,6 +32,7 @@ public final class Config {
   public static long getOrderTtl() { return ORDER_TTL;  }
   public static long getUserTtl() { return USER_TTL;  }
   public static String getSALT() { return SALT;  }
+  public static char[] getENCYPTION_KEY() { return ENCRYPTION_KEY.toCharArray();  }
 
 
   public static String getDatabaseHost() {
@@ -110,6 +110,7 @@ public final class Config {
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     PRODUCT_TTL = json.get("PRODUCT_TTL").getAsLong();
     SALT = json.get("SALT").getAsString();
+    ENCRYPTION_KEY = json.get("ENCRYPTION_KEY").getAsString();
 
     //
     ORDER_TTL = json.get("ORDER_TTL").getAsLong();
