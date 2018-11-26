@@ -2,6 +2,7 @@ package com.cbsexam;
 
 import cache.UserCache;
 import com.google.gson.Gson;
+import com.sun.org.apache.regexp.internal.RE;
 import controllers.UserController;
 import java.util.ArrayList;
 import javax.ws.rs.Consumes;
@@ -88,10 +89,21 @@ public class UserEndpoints {
   @POST
   @Path("/login")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response loginUser(String x) {
+  public Response loginUser(String body) {
 
-    // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
+    //Body from json and put into user class
+    User user = new Gson().fromJson(body, User.class);
+
+    // Gets the user with the ID and return it
+    String token = UserController.loginUser(user);
+
+    //Returns data to user
+    if (token != ""){
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(token).build(); }
+      else {
+      return Response.status(400).entity("Could not create user").build();
+    }
+
   }
 
   // TODO: Make the system able to delete users

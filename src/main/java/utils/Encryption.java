@@ -14,7 +14,7 @@ public final class Encryption {
     if (Config.getEncryption()) {
 
       // The key is predefined and hidden in code
-      // TODO: Create a more complex code and store it somewhere better
+      // TODO: Create a more complex code and store it somewhere better - FIXED
       // Har rykket kryptering til Config
       char[] key = Config.getENCYPTION_KEY();
 
