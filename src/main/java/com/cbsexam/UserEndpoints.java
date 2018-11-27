@@ -3,13 +3,10 @@ package com.cbsexam;
 import cache.UserCache;
 import com.google.gson.Gson;
 import com.sun.org.apache.regexp.internal.RE;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import controllers.UserController;
 import java.util.ArrayList;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.User;
@@ -107,11 +104,19 @@ public class UserEndpoints {
   }
 
   // TODO: Make the system able to delete users
-  public Response deleteUser(String x) {
+  @DELETE
+  @Path("/{userId}/{token}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response deleteUser(@PathParam("userId") int userId, @PathParam("token") String token) {
+
+    Boolean deleted = UserController.deleteUser(token);
+
+    if(deleted){
 
     // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
-  }
+    return Response.status(200).entity("User deleted").build();
+  } else
+      return Response.status(400).entity("Couldnt deleted user").build();
 
   // TODO: Make the system able to update users
   public Response updateUser(String x) {

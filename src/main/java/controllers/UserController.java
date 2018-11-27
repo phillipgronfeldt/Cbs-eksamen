@@ -1,5 +1,6 @@
 package controllers;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import model.User;
 import utils.Hashing;
 import utils.Log;
@@ -183,4 +185,32 @@ public class UserController {
     }
     return "";
   }
+
+  public static Boolean deleteUser (String token) {
+    if (dbCon == null) { dbCon = new DatabaseController();
+    }
+    try {
+      DecodedJWT jwt = JWT.decode(token);
+      int id = jwt.getClaim("userId").asInt();
+
+      try {
+        PreparedStatement deleteUser = dbCon.getConnection().prepareStatement("DELETE FROM USER WHERE id = ? ");
+
+        deleteUser.setInt(1, id);
+
+        int rowsAffected = deleteUser.executeUpdate();
+
+        if (rowsAffected == 1) {
+          return true;
+        }
+      } catch (SQLException sql) {
+        sql.printStackTrace();
+          
+      } catch (JWTCreationException exception) {
+        exception.printStackTrace();
+      }
+      return false;
+
+    }
+    }
 }
