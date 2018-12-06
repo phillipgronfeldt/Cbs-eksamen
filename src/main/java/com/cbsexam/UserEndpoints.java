@@ -96,7 +96,7 @@ public class UserEndpoints {
 
     //Returns data to user
     if (token != ""){
-      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(token).build(); }
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("Your token" + token).build(); }
       else {
       return Response.status(400).entity("Could not create user").build();
     }
@@ -119,7 +119,7 @@ public class UserEndpoints {
       return Response.status(400).entity("Couldnt deleted user").build();}
 
   // TODO: Make the system able to update users
-  @DELETE
+  @PUT
   @Path("/{userId}/{token}")
   @Consumes(MediaType.APPLICATION_JSON)
   public Response updateUser(@PathParam("token") String token, String body) {

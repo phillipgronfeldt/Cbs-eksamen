@@ -10,6 +10,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import model.User;
+import org.apache.solr.common.util.Hash;
 import utils.Hashing;
 import utils.Log;
 
@@ -146,43 +147,50 @@ public class UserController {
 
   public static String loginUser(User user) {
     //Checks if there is database connection
+
+
     if (dbCon == null) {
       dbCon = new DatabaseController();
-    }
-    String sql = "SELECT * FROM  user where email=' " + user.getEmail() + "'AND password ='" + user.getPassword() + "'";
 
-    dbCon.loginUser(sql);
-    ResultSet resultSet = dbCon.query(sql);
-    User userlogin;
-    String token = null;
+      ResultSet resultSet;
+      User newUser;
+      String token = null;
 
-    try {
-      if (resultSet.next()) {
-        userlogin = new User(
-                resultSet.getInt("id"),
-                resultSet.getString("first_name"),
-                resultSet.getString("last_name"),
-                resultSet.getString("password"),
-                resultSet.getString("email"));
+      try {
+        PreparedStatement loginUser = dbCon.getConnection().prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?");
+        loginUser.setString(1, user.getEmail());
+        loginUser.setString(2, user.getPassword());
 
-        if (userlogin != null) {
-          try {
-            Algorithm algorithm = Algorithm.HMAC256("secret");
-            token = JWT.create()
-                    .withClaim("userid", userlogin.getId())
-                    .withIssuer("auth0")
-                    .sign(algorithm);
-          } catch (JWTCreationException exception) {
-            System.out.println(exception.getMessage());
-          } finally {
-            return token;
+        resultSet = loginUser.executeQuery();
+
+        if (resultSet.next()) {
+          newUser = new User(
+                  resultSet.getInt("id"),
+                  resultSet.getString("first_name"),
+                  resultSet.getString("last_name"),
+                  resultSet.getString("password"),
+                  resultSet.getString("email"));
+
+          if (newUser != null) {
+            try {
+              Algorithm algorithm = Algorithm.HMAC256("secret");
+              token = JWT.create()
+                      .withClaim("userID", newUser.getId())
+                      .withIssuer("auth0")
+                      .sign(algorithm);
+            } catch (JWTCreationException exception) {
+
+            } finally {
+              return token;
+            }
           }
+        } else {
+          System.out.println("No user found");
         }
-      } else {
-        System.out.println("No user found");
+      } catch (SQLException ex) {
+        ex.printStackTrace();
       }
-    } catch (SQLException ex) {
-      System.out.println(ex.getMessage());
+
     }
     return "";
   }
