@@ -141,7 +141,7 @@ public class OrderController {
 
     Connection connection = DatabaseController.getConnection();
     // Insert the product in the DB
-    //indsætter try catch metode
+    //indsætter try catch metode, så en ordrer ikke gemmes hvis noget går galt.
 
     try {
 
