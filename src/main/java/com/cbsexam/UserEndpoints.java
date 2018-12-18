@@ -34,6 +34,8 @@ public class UserEndpoints {
 
     // Return the user with the status code 200
     // TODO: What should happen if something breaks down? - FIXED
+    //Tjekker om der hentes en bruger fra det ID som er indtastet i databasen, ved at lave user != null. Hvis der er hentet en bruger; status 200.
+    //Hvis ikke en bruger er returneret, fejl 400 og fejlmeddelse
     if (user != null) {
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
@@ -79,7 +81,8 @@ public class UserEndpoints {
 
     // Return the data to the user
     if (createUser != null) {
-      // Return a response with status 200 and JSON as type
+      // Hvis token != null, returneres en status 200, altså en succes. Hvis token derimod ikke indeholder noget, eller er blevet lavet (= null)
+      //fås fejl 400 og en fejlmeddelse
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
       return Response.status(400).entity("Could not create user").build();

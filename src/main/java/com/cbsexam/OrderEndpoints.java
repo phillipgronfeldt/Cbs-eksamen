@@ -44,6 +44,7 @@ public class OrderEndpoints {
   public Response getOrders() {
 
     // Call our controller-layer in order to get the order from the DB
+    // Forceupdate sættes til false, da der er cache på
     OrderCache orderCache = new OrderCache();
     ArrayList<Order> orders = orderCache.getOrders(false);
 

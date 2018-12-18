@@ -148,16 +148,20 @@ public class UserController {
   public static String loginUser(User user) {
     //Checks if there is database connection
 
-
+    //Tjekker om der er forbindelse til database, hvis der ikke er cconnection, oprettes en
     if (dbCon == null) {
       dbCon = new DatabaseController();
+
+      //Useren der skal logges ind kaldes newUser(Selvom det reelt set ikk er en ny user, men blot en der skal logge ind)
 
       ResultSet resultSet;
       User newUser;
       String token = null;
 
+
       Hashing hash = new Hashing();
 
+      //Passwordet bliver hashet, og bliver gemt sammen med emailen i newUser. Nu tjekkes der om der findes en tilsvarende bruger i databasen
       try {
         PreparedStatement loginUser = dbCon.getConnection().prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?");
         loginUser.setString(1, user.getEmail());
@@ -199,6 +203,8 @@ public class UserController {
   }
 
   public static Boolean deleteUser(String token) {
+
+    //tjekker om der er forbindelse til server, og hvis ikke der er, oprettes der.
     if (dbCon == null) {
       dbCon = new DatabaseController();
 
