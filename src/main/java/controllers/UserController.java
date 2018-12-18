@@ -156,10 +156,12 @@ public class UserController {
       User newUser;
       String token = null;
 
+      Hashing hash = new Hashing();
+
       try {
         PreparedStatement loginUser = dbCon.getConnection().prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?");
         loginUser.setString(1, user.getEmail());
-        loginUser.setString(2, user.getPassword());
+        loginUser.setString(2, hash.HashWithSalt(user.getPassword()));
 
         resultSet = loginUser.executeQuery();
 
@@ -179,6 +181,7 @@ public class UserController {
                       .withIssuer("auth0")
                       .sign(algorithm);
             } catch (JWTCreationException exception) {
+              System.out.println(exception.getMessage());
 
             } finally {
               return token;

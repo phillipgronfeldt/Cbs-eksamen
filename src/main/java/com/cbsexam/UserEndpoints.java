@@ -102,7 +102,7 @@ public class UserEndpoints {
     if (token != ""){
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("Your token" + token).build(); }
       else {
-      return Response.status(400).entity("Could not create user").build();
+      return Response.status(400).entity("Could not login user.").build();
     }
 
   }
