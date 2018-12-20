@@ -158,7 +158,6 @@ public class UserController {
       User newUser;
       String token = null;
 
-
       Hashing hash = new Hashing();
 
       //Passwordet bliver hashet, og bliver gemt sammen med emailen i newUser. Nu tjekkes der om der findes en tilsvarende bruger i databasen
